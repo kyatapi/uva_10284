@@ -19,3 +19,9 @@ TEST(ReadFromFEN, HandleNormalCase) {
     ASSERT_EQ(board.get_chess_at(4, 1), 'k');
 }
 
+TEST(CalculateUnattacked, HandleEmpty) {
+    istringstream iss("8/8/8/8/8/8/8/8");
+    chessboard board;
+    iss >> board;
+    ASSERT_EQ(board.calculate_unattacked_count(), 64);
+}

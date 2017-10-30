@@ -1,16 +1,24 @@
+#include <map>
 #include <iostream>
+#include <functional>
 
 class chessboard {
 public:
-    chessboard() : m_squares(CHESS_BOARD_SIZE, std::vector<char>(CHESS_BOARD_SIZE)) {}
+    chessboard() : m_squares(CHESS_BOARD_SIZE, std::vector<square>(CHESS_BOARD_SIZE)) {}
     ~chessboard() {}
 
-    char get_chess_at(unsigned int x, unsigned int y) { return m_squares[x][y]; }
-    size_t calculate_unattacked_count() { return 64; }
+    char get_chess_at(unsigned int x, unsigned int y) { return m_squares[x][y].chess; }
+    size_t calculate_unattacked_count();
 
     friend std::istream & operator >> (std::istream &is, chessboard &rhs);
 
 private:
     enum { CHESS_BOARD_SIZE = 8 };
-    std::vector<std::vector<char>> m_squares;
+    struct square {
+        char chess;
+        unsigned short attacked_count;
+    };
+    std::vector<std::vector<square>> m_squares;
+
+    const static std::map<char, std::function<void(size_t, size_t, std::vector<std::vector<square>>&)>> ATTACK_PATTERNS;
 };

@@ -12,6 +12,7 @@ using namespace std;
 istream & operator >> (istream &is, chessboard &rhs) {
     static const string VALID_CHESS_LETTERS("pnbrqkPNBRQK");
 
+    rhs.m_squares = vector<vector<chessboard::square>>(chessboard::CHESS_BOARD_SIZE, vector<chessboard::square>(chessboard::CHESS_BOARD_SIZE));
     for (unsigned int y = 0; y < chessboard::CHESS_BOARD_SIZE; ++y) {
         string row;
         getline(is, row, '/');
@@ -39,6 +40,16 @@ const map<char, function<void(size_t, size_t, vector<vector<chessboard::square>>
         squares[x + 1][y - 1].attacked_count++;
         squares[x - 1][y + 1].attacked_count++;
         squares[x + 1][y + 1].attacked_count++;
+    }},
+    {'n', [](size_t x, size_t y, vector<vector<chessboard::square>>& squares) {
+        squares[x - 1][y - 2].attacked_count++;
+        squares[x - 1][y + 2].attacked_count++;
+        squares[x + 1][y - 2].attacked_count++;
+        squares[x + 1][y + 2].attacked_count++;
+        squares[x - 2][y - 1].attacked_count++;
+        squares[x + 2][y - 1].attacked_count++;
+        squares[x - 2][y + 1].attacked_count++;
+        squares[x + 2][y + 1].attacked_count++;
     }}
 };
 

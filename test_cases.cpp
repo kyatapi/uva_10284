@@ -31,4 +31,9 @@ TEST(CalculateUnattacked, HandleNoObstacle) {
     chessboard board;
     iss >> board;
     ASSERT_EQ(board.calculate_unattacked_count(), 48);
+
+    iss.str("8/8/2n5/8/8/5N2/8/8");
+    iss.clear();
+    iss >> board;
+    ASSERT_EQ(board.calculate_unattacked_count(), 50);
 }

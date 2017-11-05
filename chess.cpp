@@ -41,7 +41,7 @@ const map<char, function<void(size_t, size_t, vector<vector<chessboard::square>>
         squares[x + 1][y - 1].attacked_count++;
         squares[x - 1][y + 1].attacked_count++;
         squares[x + 1][y + 1].attacked_count++;
-    }},
+    } },
  
     {'n', [](size_t x, size_t y, vector<vector<chessboard::square>>& squares) {
         squares[x][y].attacked_count++;
@@ -53,7 +53,7 @@ const map<char, function<void(size_t, size_t, vector<vector<chessboard::square>>
         squares[x + 2][y - 1].attacked_count++;
         squares[x - 2][y + 1].attacked_count++;
         squares[x + 2][y + 1].attacked_count++;
-    }},
+    } },
  
     { 'b', [](size_t x, size_t y, vector<vector<chessboard::square>>& squares) {
         squares[x][y].attacked_count++;
@@ -68,7 +68,20 @@ const map<char, function<void(size_t, size_t, vector<vector<chessboard::square>>
                 squares[d][y + x - d].attacked_count++;
             }
         }
-    }}
+    } },
+
+    { 'r', [](size_t x, size_t y, vector<vector<chessboard::square>>& squares) {
+        squares[x][y].attacked_count++;
+        for (size_t d = 0; d < 8; ++d) {
+            if (d != x) {
+                squares[d][y].attacked_count++;
+            }
+
+            if (d != y) {
+                squares[x][d].attacked_count++;
+            }
+        }
+    } }
 };
 
 size_t chessboard::calculate_unattacked_count() {

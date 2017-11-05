@@ -41,4 +41,9 @@ TEST(CalculateUnattacked, HandleNoObstacle) {
     iss.clear();
     iss >> board;
     ASSERT_EQ(board.calculate_unattacked_count(), 50);
+
+    iss.str("3r4/8/8/8/8/8/8/4R3");
+    iss.clear();
+    iss >> board;
+    ASSERT_EQ(board.calculate_unattacked_count(), 36);
 }

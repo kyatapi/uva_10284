@@ -30,86 +30,78 @@ istream & operator >> (istream &is, chessboard &rhs) {
     return is;
 }
 
+void chessboard::king(size_t x, size_t y, vector<vector<chessboard::square>>& squares) {
+    squares[x - 1][y].attacked_count++;
+    squares[x][y - 1].attacked_count++;
+    squares[x + 1][y].attacked_count++;
+    squares[x][y + 1].attacked_count++;
+    squares[x - 1][y - 1].attacked_count++;
+    squares[x + 1][y - 1].attacked_count++;
+    squares[x - 1][y + 1].attacked_count++;
+    squares[x + 1][y + 1].attacked_count++;
+}
+
+void chessboard::knight(size_t x, size_t y, vector<vector<chessboard::square>>& squares) {
+    squares[x - 1][y - 2].attacked_count++;
+    squares[x - 1][y + 2].attacked_count++;
+    squares[x + 1][y - 2].attacked_count++;
+    squares[x + 1][y + 2].attacked_count++;
+    squares[x - 2][y - 1].attacked_count++;
+    squares[x + 2][y - 1].attacked_count++;
+    squares[x - 2][y + 1].attacked_count++;
+    squares[x + 2][y + 1].attacked_count++;
+}
+
+void chessboard::bishop(size_t x, size_t y, vector<vector<chessboard::square>>& squares) {
+    for (size_t d = 0; d < 8; ++d) {
+        if (d == x) continue;
+
+        if (y - x + d >= 0 && y - x + d < chessboard::CHESS_BOARD_SIZE) {
+            squares[d][y - x + d].attacked_count++;
+        }
+
+        if (y + x - d >= 0 && y + x - d < chessboard::CHESS_BOARD_SIZE) {
+            squares[d][y + x - d].attacked_count++;
+        }
+    }
+}
+
+void chessboard::castle(size_t x, size_t y, vector<vector<chessboard::square>>& squares) {
+    for (size_t d = 0; d < 8; ++d) {
+        if (d != x) {
+            squares[d][y].attacked_count++;
+        }
+
+        if (d != y) {
+            squares[x][d].attacked_count++;
+        }
+    }
+}
+
+void chessboard::queen(size_t x, size_t y, vector<vector<chessboard::square>>& squares) {
+    castle(x, y, squares);
+    bishop(x, y, squares);
+}
+
 const map<char, function<void(size_t, size_t, vector<vector<chessboard::square>>&)>> chessboard::ATTACK_PATTERNS = {
-    {'k', [](size_t x, size_t y, vector<vector<chessboard::square>>& squares) {
-        squares[x][y].attacked_count++;
-        squares[x - 1][y].attacked_count++;
-        squares[x][y - 1].attacked_count++;
-        squares[x + 1][y].attacked_count++;
-        squares[x][y + 1].attacked_count++;
-        squares[x - 1][y - 1].attacked_count++;
-        squares[x + 1][y - 1].attacked_count++;
-        squares[x - 1][y + 1].attacked_count++;
-        squares[x + 1][y + 1].attacked_count++;
-    } },
- 
-    {'n', [](size_t x, size_t y, vector<vector<chessboard::square>>& squares) {
-        squares[x][y].attacked_count++;
-        squares[x - 1][y - 2].attacked_count++;
-        squares[x - 1][y + 2].attacked_count++;
-        squares[x + 1][y - 2].attacked_count++;
-        squares[x + 1][y + 2].attacked_count++;
-        squares[x - 2][y - 1].attacked_count++;
-        squares[x + 2][y - 1].attacked_count++;
-        squares[x - 2][y + 1].attacked_count++;
-        squares[x + 2][y + 1].attacked_count++;
-    } },
- 
-    { 'b', [](size_t x, size_t y, vector<vector<chessboard::square>>& squares) {
-        squares[x][y].attacked_count++;
-        for (size_t d = 0; d < 8; ++d) {
-            if (d == x) continue;
-
-            if (y - x + d >= 0 && y - x + d < chessboard::CHESS_BOARD_SIZE) {
-                squares[d][y - x + d].attacked_count++;
-            }
-
-            if (y + x - d >= 0 && y + x - d < chessboard::CHESS_BOARD_SIZE) {
-                squares[d][y + x - d].attacked_count++;
-            }
-        }
-    } },
-
-    { 'r', [](size_t x, size_t y, vector<vector<chessboard::square>>& squares) {
-        squares[x][y].attacked_count++;
-        for (size_t d = 0; d < 8; ++d) {
-            if (d != x) {
-                squares[d][y].attacked_count++;
-            }
-
-            if (d != y) {
-                squares[x][d].attacked_count++;
-            }
-        }
-    } },
-
-    { 'q', [](size_t x, size_t y, vector<vector<chessboard::square>>& squares) {
-        squares[x][y].attacked_count++;
-        for (size_t d = 0; d < 8; ++d) {
-            if (d != x) {
-                squares[d][y].attacked_count++;
-            }
-
-            if (d != y) {
-                squares[x][d].attacked_count++;
-            }
-
-            if (y - x + d >= 0 && y - x + d < chessboard::CHESS_BOARD_SIZE) {
-                squares[d][y - x + d].attacked_count++;
-            }
-
-            if (y + x - d >= 0 && y + x - d < chessboard::CHESS_BOARD_SIZE) {
-                squares[d][y + x - d].attacked_count++;
-            }
-        }
-    } }
+    { 'N', chessboard::knight },
+    { 'B', chessboard::bishop },
+    { 'R', chessboard::castle },
+    { 'Q', chessboard::queen },
+    { 'K', chessboard::king },
+    {'n', chessboard::knight},
+    { 'b', chessboard::bishop},
+    { 'r', chessboard::castle},
+    { 'q', chessboard::queen},
+    { 'k', chessboard::king }
 };
 
 size_t chessboard::calculate_unattacked_count() {
     for (size_t y = 0; y < CHESS_BOARD_SIZE; ++y) {
         for (size_t x = 0; x < CHESS_BOARD_SIZE; ++x) {
             if (m_squares[x][y].chess) {
-                ATTACK_PATTERNS.at(tolower(m_squares[x][y].chess))(x, y, m_squares);
+                m_squares[x][y].attacked_count++;
+                ATTACK_PATTERNS.at(m_squares[x][y].chess)(x, y, m_squares);
             }
         }
     }

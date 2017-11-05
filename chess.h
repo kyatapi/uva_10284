@@ -21,5 +21,11 @@ private:
     };
     std::vector<std::vector<square>> m_squares;
 
+    static void knight(size_t, size_t, std::vector<std::vector<square>>&);
+    static void bishop(size_t, size_t, std::vector<std::vector<square>>&);
+    static void castle(size_t, size_t, std::vector<std::vector<square>>&);
+    static void queen(size_t, size_t, std::vector<std::vector<square>>&);
+    static void king(size_t, size_t, std::vector<std::vector<square>>&);
+
     const static std::map<char, std::function<void(size_t, size_t, std::vector<std::vector<square>>&)>> ATTACK_PATTERNS;
 };

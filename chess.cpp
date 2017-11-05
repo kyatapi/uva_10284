@@ -8,6 +8,7 @@ inline void run_test(int argc, char **argv) {}
 #include "chess.h"
 
 using namespace std;
+using namespace std::placeholders;
 
 istream & operator >> (istream &is, chessboard &rhs) {
     static const string VALID_CHESS_LETTERS("pnbrqkPNBRQK");
@@ -83,12 +84,25 @@ void chessboard::queen(size_t x, size_t y, vector<vector<chessboard::square>>& s
     bishop(x, y, squares);
 }
 
+void chessboard::pawn(size_t x, size_t y, std::vector<std::vector<chessboard::square>>& squares, bool black) {
+    if (black && y <chessboard::CHESS_BOARD_SIZE - 1) {
+        if (x > 0) squares[x - 1][y + 1].attacked_count++;
+        if (x < chessboard::CHESS_BOARD_SIZE - 1) squares[x + 1][y + 1].attacked_count++;
+    }
+    else if (!black && y > 0) {
+        if (x > 0) squares[x - 1][y - 1].attacked_count++;
+        if (x < chessboard::CHESS_BOARD_SIZE - 1) squares[x + 1][y - 1].attacked_count++;
+    }
+}
+
 const map<char, function<void(size_t, size_t, vector<vector<chessboard::square>>&)>> chessboard::ATTACK_PATTERNS = {
+    { 'P', bind(chessboard::pawn, _1, _2, _3, false) },
     { 'N', chessboard::knight },
     { 'B', chessboard::bishop },
     { 'R', chessboard::castle },
     { 'Q', chessboard::queen },
     { 'K', chessboard::king },
+    { 'p', bind(chessboard::pawn, _1, _2, _3, true) },
     {'n', chessboard::knight},
     { 'b', chessboard::bishop},
     { 'r', chessboard::castle},

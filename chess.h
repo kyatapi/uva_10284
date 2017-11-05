@@ -21,6 +21,7 @@ private:
     };
     std::vector<std::vector<square>> m_squares;
 
+    static void pawn(size_t, size_t, std::vector<std::vector<square>>&, bool);
     static void knight(size_t, size_t, std::vector<std::vector<square>>&);
     static void bishop(size_t, size_t, std::vector<std::vector<square>>&);
     static void castle(size_t, size_t, std::vector<std::vector<square>>&);

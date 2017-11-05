@@ -30,10 +30,10 @@ TEST(CalculateUnattacked, HandleNoObstacle) {
     istringstream iss("8/4k3/8/8/8/8/3K4/8");
     chessboard board;
     iss >> board;
-    ASSERT_EQ(board.calculate_unattacked_count(), 48);
+    ASSERT_EQ(board.calculate_unattacked_count(), 46);
 
     iss.str("8/8/2n5/8/8/5N2/8/8");
     iss.clear();
     iss >> board;
-    ASSERT_EQ(board.calculate_unattacked_count(), 50);
+    ASSERT_EQ(board.calculate_unattacked_count(), 48);
 }

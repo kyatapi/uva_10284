@@ -32,6 +32,7 @@ istream & operator >> (istream &is, chessboard &rhs) {
 
 const map<char, function<void(size_t, size_t, vector<vector<chessboard::square>>&)>> chessboard::ATTACK_PATTERNS = {
     {'k', [](size_t x, size_t y, vector<vector<chessboard::square>>& squares) {
+        squares[x][y].attacked_count++;
         squares[x - 1][y].attacked_count++;
         squares[x][y - 1].attacked_count++;
         squares[x + 1][y].attacked_count++;
@@ -41,7 +42,9 @@ const map<char, function<void(size_t, size_t, vector<vector<chessboard::square>>
         squares[x - 1][y + 1].attacked_count++;
         squares[x + 1][y + 1].attacked_count++;
     }},
+ 
     {'n', [](size_t x, size_t y, vector<vector<chessboard::square>>& squares) {
+        squares[x][y].attacked_count++;
         squares[x - 1][y - 2].attacked_count++;
         squares[x - 1][y + 2].attacked_count++;
         squares[x + 1][y - 2].attacked_count++;
@@ -50,6 +53,8 @@ const map<char, function<void(size_t, size_t, vector<vector<chessboard::square>>
         squares[x + 2][y - 1].attacked_count++;
         squares[x - 2][y + 1].attacked_count++;
         squares[x + 2][y + 1].attacked_count++;
+    }},
+ 
     }}
 };
 

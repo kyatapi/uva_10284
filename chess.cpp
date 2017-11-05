@@ -32,25 +32,25 @@ istream & operator >> (istream &is, chessboard &rhs) {
 }
 
 void chessboard::king(size_t x, size_t y, vector<vector<chessboard::square>>& squares) {
-    squares[x - 1][y].attacked_count++;
-    squares[x][y - 1].attacked_count++;
-    squares[x + 1][y].attacked_count++;
-    squares[x][y + 1].attacked_count++;
-    squares[x - 1][y - 1].attacked_count++;
-    squares[x + 1][y - 1].attacked_count++;
-    squares[x - 1][y + 1].attacked_count++;
-    squares[x + 1][y + 1].attacked_count++;
+    if (x > 0)                                                                                                                                  squares[x - 1][y].attacked_count++;
+    if (y > 0)                                                                                                                                  squares[x][y - 1].attacked_count++;
+    if (x < chessboard::CHESS_BOARD_SIZE - 1)                                                                          squares[x + 1][y].attacked_count++;
+    if (y < chessboard::CHESS_BOARD_SIZE - 1)                                                                          squares[x][y + 1].attacked_count++;
+    if (x > 0 && y > 0)                                                                                                                  squares[x - 1][y - 1].attacked_count++;
+    if (x < chessboard::CHESS_BOARD_SIZE - 1 && y > 0)                                                          squares[x + 1][y - 1].attacked_count++;
+    if (x > 0 && y < chessboard::CHESS_BOARD_SIZE - 1)                                                          squares[x - 1][y + 1].attacked_count++;
+    if (x < chessboard::CHESS_BOARD_SIZE - 1 && y < chessboard::CHESS_BOARD_SIZE - 1)  squares[x + 1][y + 1].attacked_count++;
 }
 
 void chessboard::knight(size_t x, size_t y, vector<vector<chessboard::square>>& squares) {
-    squares[x - 1][y - 2].attacked_count++;
-    squares[x - 1][y + 2].attacked_count++;
-    squares[x + 1][y - 2].attacked_count++;
-    squares[x + 1][y + 2].attacked_count++;
-    squares[x - 2][y - 1].attacked_count++;
-    squares[x + 2][y - 1].attacked_count++;
-    squares[x - 2][y + 1].attacked_count++;
-    squares[x + 2][y + 1].attacked_count++;
+    if (x > 0 && y > 1)                                                                                                                  squares[x - 1][y - 2].attacked_count++;
+    if (x > 0 && y < chessboard::CHESS_BOARD_SIZE - 2)                                                          squares[x - 1][y + 2].attacked_count++;
+    if (x < chessboard::CHESS_BOARD_SIZE - 1 && y > 1)                                                          squares[x + 1][y - 2].attacked_count++;
+    if (x < chessboard::CHESS_BOARD_SIZE - 1 && y < chessboard::CHESS_BOARD_SIZE - 2)  squares[x + 1][y + 2].attacked_count++;
+    if (x > 1 && y > 0)                                                                                                                  squares[x - 2][y - 1].attacked_count++;
+    if (x < chessboard::CHESS_BOARD_SIZE - 2 && y > 0)                                                          squares[x + 2][y - 1].attacked_count++;
+    if (x > 1 && y < chessboard::CHESS_BOARD_SIZE - 1)                                                          squares[x - 2][y + 1].attacked_count++;
+    if (x < chessboard::CHESS_BOARD_SIZE - 2 && y < chessboard::CHESS_BOARD_SIZE - 1)  squares[x + 2][y + 1].attacked_count++;
 }
 
 void chessboard::bishop(size_t x, size_t y, vector<vector<chessboard::square>>& squares) {

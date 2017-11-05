@@ -55,6 +55,19 @@ const map<char, function<void(size_t, size_t, vector<vector<chessboard::square>>
         squares[x + 2][y + 1].attacked_count++;
     }},
  
+    { 'b', [](size_t x, size_t y, vector<vector<chessboard::square>>& squares) {
+        squares[x][y].attacked_count++;
+        for (size_t d = 0; d < 8; ++d) {
+            if (d == x) continue;
+
+            if (y - x + d >= 0 && y - x + d < chessboard::CHESS_BOARD_SIZE) {
+                squares[d][y - x + d].attacked_count++;
+            }
+
+            if (y + x - d >= 0 && y + x - d < chessboard::CHESS_BOARD_SIZE) {
+                squares[d][y + x - d].attacked_count++;
+            }
+        }
     }}
 };
 

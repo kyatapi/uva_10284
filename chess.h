@@ -4,6 +4,8 @@
 
 class chessboard {
 public:
+    enum { CHESS_BOARD_SIZE = 8 };
+
     chessboard() : m_squares(CHESS_BOARD_SIZE, std::vector<square>(CHESS_BOARD_SIZE)) {}
     ~chessboard() {}
 
@@ -13,7 +15,6 @@ public:
     friend std::istream & operator >> (std::istream &is, chessboard &rhs);
 
 private:
-    enum { CHESS_BOARD_SIZE = 8 };
     struct square {
         char chess;
         unsigned short attacked_count;

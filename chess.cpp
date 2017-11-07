@@ -155,5 +155,14 @@ size_t chessboard::calculate_unattacked_count() {
 
 int main(int argc, char** argv) {
     run_test(argc, argv);
+
+    string line;
+    while (getline(cin, line)) {
+        istringstream iss(line);
+        chessboard board;
+        iss >> board;
+        cout << board.calculate_unattacked_count() << endl;
+    }
+
     return 0;
 }

@@ -69,3 +69,10 @@ TEST(CalculateUnattacked, HandleBoundaryCase) {
     iss >> board;
     ASSERT_EQ(board.calculate_unattacked_count(), 54);
 }
+
+TEST(CalculateUnattacked, HandleObstacleCase) {
+    istringstream iss("3q4/2p5/8/8/8/8/8/8");
+    chessboard board;
+    iss >> board;
+    ASSERT_EQ(board.calculate_unattacked_count(), 43);
+}

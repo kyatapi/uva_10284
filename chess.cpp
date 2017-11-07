@@ -54,16 +54,32 @@ void chessboard::knight(size_t x, size_t y, vector<vector<chessboard::square>>& 
 }
 
 void chessboard::bishop(size_t x, size_t y, vector<vector<chessboard::square>>& squares) {
-    for (size_t d = 0; d < 8; ++d) {
-        if (d == x) continue;
+    static function<bool(int, int, vector<vector<chessboard::square>>&)> update_board = [](int dx, int dy, vector<vector<chessboard::square>>& squares) {
+        if (dy < 0 || dy >= CHESS_BOARD_SIZE) return true;
+        if (squares[dx][dy].chess) return false;
 
-        if (y - x + d >= 0 && y - x + d < chessboard::CHESS_BOARD_SIZE) {
-            squares[d][y - x + d].attacked_count++;
-        }
+        squares[dx][dy].attacked_count++;
+        return true;
+    };
 
-        if (y + x - d >= 0 && y + x - d < chessboard::CHESS_BOARD_SIZE) {
-            squares[d][y + x - d].attacked_count++;
-        }
+    for (int dx = x - 1; dx >= 0; --dx) {
+        int dy = y - x + dx;
+        if (!update_board(dx, dy, squares)) break;
+    }
+
+    for (int dx = x + 1; dx < CHESS_BOARD_SIZE; ++dx) {
+        int dy = y - x + dx;
+        if (!update_board(dx, dy, squares)) break;
+    }
+
+    for (int dx = x - 1; dx >= 0; --dx) {
+        int dy = y + x - dx;
+        if (!update_board(dx, dy, squares)) break;
+    }
+
+    for (int dx = x + 1; dx < CHESS_BOARD_SIZE; ++dx) {
+        int dy = y + x - dx;
+        if (!update_board(dx, dy, squares)) break;
     }
 }
 

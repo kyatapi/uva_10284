@@ -75,4 +75,9 @@ TEST(CalculateUnattacked, HandleObstacleCase) {
     chessboard board;
     iss >> board;
     ASSERT_EQ(board.calculate_unattacked_count(), 43);
+
+    iss.str("3r4/3p4/8/8/8/8/8/8");
+    iss.clear();
+    iss >> board;
+    ASSERT_EQ(board.calculate_unattacked_count(), 53);
 }

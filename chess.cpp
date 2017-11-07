@@ -84,14 +84,24 @@ void chessboard::bishop(size_t x, size_t y, vector<vector<chessboard::square>>& 
 }
 
 void chessboard::castle(size_t x, size_t y, vector<vector<chessboard::square>>& squares) {
-    for (size_t d = 0; d < 8; ++d) {
-        if (d != x) {
-            squares[d][y].attacked_count++;
-        }
+    for (int d = x -1 ; d >= 0; --d) {
+        if (squares[d][y].chess) break;
+        squares[d][y].attacked_count++;
+    }
 
-        if (d != y) {
-            squares[x][d].attacked_count++;
-        }
+    for (int d = y - 1; d >= 0; --d) {
+        if (squares[x][d].chess) break;
+        squares[x][d].attacked_count++;
+    }
+
+    for (int d = x + 1; d < CHESS_BOARD_SIZE; ++d) {
+        if (squares[d][y].chess) break;
+        squares[d][y].attacked_count++;
+    }
+
+    for (int d = y + 1; d < CHESS_BOARD_SIZE; ++d) {
+        if (squares[x][d].chess) break;
+        squares[x][d].attacked_count++;
     }
 }
 

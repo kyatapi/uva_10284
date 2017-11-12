@@ -86,3 +86,15 @@ TEST(CalculateUnattacked, HandleObstacleCase) {
     iss >> board;
     ASSERT_EQ(board.calculate_unattacked_count(), 58);
 }
+
+TEST(CalculateUnattacked, HandleNormalCase) {
+    istringstream iss("8/8/8/3Q4/3N4/8/8/8");
+    chessboard board;
+    iss >> board;
+    ASSERT_EQ(board.calculate_unattacked_count(), 37);
+
+    iss.str("8/8/8/8/7B/6N1/8/7R");
+    iss.clear();
+    iss >> board;
+    ASSERT_EQ(board.calculate_unattacked_count(), 44);
+}
